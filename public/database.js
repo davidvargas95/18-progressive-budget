@@ -1,5 +1,3 @@
-const { get } = require("mongoose");
-
 let db;
 
 const request = indexedDB.open("budget", 1);
@@ -22,14 +20,14 @@ request.onerror = (event) => {
 };
 
 const saveTransaction = (data) => {
-    const transaction = db.transaction(["transaction"], "readwrite");
+    const transaction = db.transaction([ "transaction" ], "readwrite");
     const store = transaction.objectStore("transaction");
 
     store.add(data);
 };
 
 function checkDatabase() {
-    const transaction = db.transaction( ["transaction"], "readwrite");
+    const transaction = db.transaction([ "transaction" ], "readwrite");
     const store = transaction.objectStore("transaction");
     const getAll = store.getAll();
 
