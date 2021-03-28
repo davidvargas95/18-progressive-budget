@@ -11,11 +11,13 @@ let db;
 
 const request = indexedDB.open("budget", 1);
 
+// Creates the object store
 request.onupgradeneeded = (event) => {
     const db = event.target.result;
     db.createObjectStore("pending", { autoIncrement: true });
 };
 
+// Checks our database when we come back online
 request.onsuccess = (event) => {
     db = event.target.result;
 
@@ -24,10 +26,12 @@ request.onsuccess = (event) => {
     }
 };
 
+// Logs an error if coming back online fails
 request.onerror = (event) => {
     console.log(`Error ${event.target.errorCode}`);
 };
 
+// Caches what we enter while in offline mode
 const saveRecord = (data) => {
     const transaction = db.transaction([ "pending" ], "readwrite");
     const store = transaction.objectStore("pending");
@@ -35,6 +39,7 @@ const saveRecord = (data) => {
     store.add(data);
 };
 
+// Checks what was entered while in offline mode
 function checkDatabase() {
     const transaction = db.transaction([ "pending" ], "readwrite");
     const store = transaction.objectStore("pending");
